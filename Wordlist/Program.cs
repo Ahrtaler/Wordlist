@@ -17,8 +17,10 @@ namespace Wordlist
         static void Website_durchsuchen()
         {
             WebClient client = new WebClient();
+            client.Encoding = System.Text.Encoding.UTF8;
 
-            string site = Text_filtern(client.DownloadString("https://de.wikipedia.org/wiki/Eichen"));
+            string site = client.DownloadString("https://de.wikipedia.org/wiki/Eichen");
+            string text = Text_filtern(site);
         }
 
         static string Text_filtern(string site)
@@ -65,12 +67,9 @@ namespace Wordlist
                     {
                         int ascii = site[i]; //Ist nich immer gleich c, da im Fall, dass c > der String verändert wird.
 
-                        if (ascii == 45 || ascii == 40 || ascii == 41 ||ascii == 91 || ascii == 93 || ascii == 123 || ascii == 125)
-                            site = site.Substring(0, i) + ' ' + site.Substring(i + 1); //Bindestriche und Klammern werden durch ein Leerzeichen ersetzt.
-
-                        if ((ascii != 32 && ascii < 65) || (ascii > 90 && ascii < 97) || (ascii > 122 && ascii < 129) || ascii > 154) //Alle Zeichen in diesen bereichen sind Sonderzeichen
+                        if ((ascii != 32 && ascii < 65) || (ascii > 90 && ascii < 97) || (ascii > 122 && ascii != 228 /*ä*/ && ascii != 246 /*ö*/ && ascii != 252 /*ü*/ && ascii != 196 /*Ä*/ && ascii != 214 /*Ö*/ && ascii != 220 /*Ü*/ && ascii != 223 /*ß*/)) //Alle Zeichen in diesen bereichen sind Sonderzeichen
                         {
-                            site = site.Substring(0, i) + site.Substring(i + 1);
+                            site = site.Substring(0, i) + ' ' + site.Substring(i + 1);
                             i--;
                         }
                     }
