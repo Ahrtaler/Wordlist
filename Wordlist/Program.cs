@@ -81,7 +81,7 @@ namespace Wordlist
             return site;
         }
 
-        static void Woerter_Lesen(string eingab
+        static void Woerter_Lesen(string eingabe)
         {
             bool vorherigerchar = false;
             string wort = "";
