@@ -9,6 +9,8 @@ namespace Wordlist
 {
     class Program
     {
+        static List<string> wortliste = new List<string>();
+
         static void Main(string[] args)
         {
             Website_durchsuchen();
@@ -21,6 +23,7 @@ namespace Wordlist
 
             string site = client.DownloadString("https://de.wikipedia.org/wiki/Eichen");
             string text = Text_filtern(site);
+            Woerter_Lesen(text);
         }
 
         static string Text_filtern(string site)
@@ -76,6 +79,48 @@ namespace Wordlist
                 }
             }
             return site;
+        }
+
+        static void Woerter_Lesen(string eingab
+        {
+            bool vorherigerchar = false;
+            string wort = "";
+            foreach(char c in eingabe)
+            {
+                if (c != ' ')
+                {
+                    if (vorherigerchar == false)
+                    {
+                        wort = "" + c;
+                        vorherigerchar = true;
+                    }
+                    else
+                    {
+                        wort = wort + c;
+                    }
+                }
+                else
+                {
+                    if (vorherigerchar == true)
+                    {
+                        if(wort.Length > 1 && Kontrollier_Wort(wort))
+                            wortliste.Add(wort);
+
+                        vorherigerchar = false;
+                    }
+                }
+            }
+        }
+
+        static bool Kontrollier_Wort(string eingabe)
+        {
+            foreach(string s in wortliste)
+            {
+                if (s == eingabe)
+                    return false; //Gibt es das Wort schon wird false zurueckgegeben
+            }
+
+            return true; //Nur wenn es das Wort noch nicht gibt, wird dieser Codeberreich erreicht. Es wird true zurueckgegeben.
         }
     }
 }
